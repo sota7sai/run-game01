@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/FBXLoader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/inflate.js/0.5.2/inflate.min.js"></script>
     <style>
-        body { margin: 0; overflow: hidden; touch-action: none; }
+        body { margin: 0; overflow: hidden; touch-action: none; background-color: #000; }
         #score {
             position: fixed;
             top: 20px;
@@ -119,7 +119,7 @@
             // FBXモデルのロード
             const loader = new THREE.FBXLoader();
             loader.load(
-                './tonio_run_loop.fbx',
+                './model/toniorun/tonio_run_loop.fbx',  // パスを更新
                 (fbx) => {
                     player = fbx;
                     player.scale.setScalar(0.02);  // スケールの調整
@@ -144,10 +144,15 @@
                     document.getElementById('startButton').style.display = 'block';
                 },
                 (xhr) => {
-                    console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+                    // ローディング進捗の表示
+                    const percent = (xhr.loaded / xhr.total) * 100;
+                    document.getElementById('loading').textContent = 
+                        `ロード中... ${percent.toFixed(1)}%`;
                 },
                 (error) => {
                     console.error('FBXのロードに失敗:', error);
+                    document.getElementById('loading').textContent = 
+                        'モデルのロードに失敗しました。ページを更新してください。';
                 }
             );
             
